@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ekaete - Senior Cloud Architect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00d9ff;
+            --secondary: #ff006e;
+            --accent: #8338ec;
+            --dark: #0a0e27;
+            --darker: #050714;
+            --light: #e0f7ff;
+            --glow: rgba(0, 217, 255, 0.4);
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated background */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 217, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 217, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        /* Glowing orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            z-index: 0;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            top: 10%;
+            left: 15%;
+            width: 400px;
+            height: 400px;
+            background: var(--primary);
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            top: 60%;
+            right: 10%;
+            width: 350px;
+            height: 350px;
+            background: var(--accent);
+            animation-delay: 2s;
+        }
+
+        .orb-3 {
+            bottom: 10%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            background: var(--secondary);
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-30px) scale(1.1); }
+        }
+
+        /* Header */
+        header {
+            position: relative;
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 2px solid rgba(0, 217, 255, 0.2);
+        }
+
+        .glitch-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px var(--glow);
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 30px var(--glow), 0 0 60px var(--glow); }
+            50% { text-shadow: 0 0 50px var(--glow), 0 0 100px var(--glow); }
+        }
+
+        .title {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.8rem;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .meta {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            font-size: 0.95rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            background: rgba(0, 217, 255, 0.05);
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .meta-item:hover {
+            background: rgba(0, 217, 255, 0.1);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 217, 255, 0.2);
+        }
+
+        .meta-item::before {
+            content: "▸";
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Main content grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background: rgba(10, 14, 39, 0.6);
+            border: 1px solid rgba(0, 217, 255, 0.15);
+            border-radius: 12px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 10px 40px rgba(0, 217, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card h2::before {
+            content: "//";
+            color: var(--secondary);
+            font-size: 1.2rem;
+        }
+
+        .card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .card li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .card li:hover {
+            color: var(--primary);
+            padding-left: 30px;
+        }
+
+        .card li:hover::before {
+            left: 5px;
+        }
+
+        /* Skills section - full width */
+        .skills-section {
+            grid-column: 1 / -1;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .skill-tag {
+            background: rgba(131, 56, 236, 0.1);
+            border: 1px solid var(--accent);
+            padding: 12px 20px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-tag::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 217, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .skill-tag:hover::before {
+            left: 100%;
+        }
+
+        .skill-tag:hover {
+            background: rgba(131, 56, 236, 0.2);
+            border-color: var(--primary);
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(131, 56, 236, 0.3);
+        }
+
+        /* Stats bar */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.05), rgba(131, 56, 236, 0.05));
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 217, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .stat-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--light);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 2px solid rgba(0, 217, 255, 0.2);
+            font-size: 0.9rem;
+            color: rgba(224, 247, 255, 0.6);
+        }
+
+        .tagline {
+            font-family: 'Space Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .slide-up {
+            animation: slideUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stagger animation delays */
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:nth-child(5) { animation-delay: 0.5s; }
+        .card:nth-child(6) { animation-delay: 0.6s; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 3rem; }
+            .title { font-size: 1.2rem; }
+            .content-grid { grid-template-columns: 1fr; }
+            .stats { grid-template-columns: 1fr; }
+            .container { padding: 40px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="bg-grid"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="fade-in">
+            <div class="glitch-wrapper">
+                <h1>EKAETE</h1>
+            </div>
+            <div class="title">Senior Cloud Architect</div>
+            <div class="meta">
+                <div class="meta-item">Abacus Group</div>
+                <div class="meta-item">8+ Years Experience</div>
+                <div class="meta-item">Cloud Infrastructure Specialist</div>
+            </div>
+        </header>
+
+        <!-- Stats -->
+        <div class="stats fade-in">
+            <div class="stat-card">
+                <div class="stat-number">8+</div>
+                <div class="stat-label">Years in Cloud</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Projects Delivered</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">99.9%</div>
+                <div class="stat-label">Uptime Achieved</div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div class="content-grid">
+            <div class="card slide-up">
+                <h2>Expertise</h2>
+                <ul>
+                    <li>Multi-cloud architecture design (AWS, Azure, GCP)</li>
+                    <li>Infrastructure as Code (Terraform, CloudFormation)</li>
+                    <li>Kubernetes & container orchestration</li>
+                    <li>DevOps pipeline automation & CI/CD</li>
+                    <li>Cloud cost optimization & FinOps</li>
+                    <li>Disaster recovery & high availability</li>
+                    <li>Cloud security & compliance frameworks</li>
+                </ul>
+            </div>
+
+            <div class="card slide-up">
+                <h2>Achievements</h2>
+                <ul>
+                    <li>Led migration of 200+ services to cloud infrastructure</li>
+                    <li>Reduced infrastructure costs by 40% through optimization</li>
+                    <li>Architected zero-downtime deployment systems</li>
+                    <li>Implemented enterprise-scale Kubernetes clusters</li>
+                    <li>Designed multi-region disaster recovery solutions</li>
+                    <li>Mentored 15+ engineers in cloud best practices</li>
+                </ul>
+            </div>
+
+            <div class="card slide-up">
+                <h2>Certifications</h2>
+                <ul>
+                    <li>AWS Certified Solutions Architect - Professional</li>
+                    <li>Azure Solutions Architect Expert</li>
+                    <li>Google Cloud Professional Cloud Architect</li>
+                    <li>Certified Kubernetes Administrator (CKA)</li>
+                    <li>HashiCorp Certified: Terraform Associate</li>
+                    <li>TOGAF 9 Certified</li>
+                </ul>
+            </div>
+
+            <div class="card slide-up">
+                <h2>Leadership</h2>
+                <ul>
+                    <li>Lead architect for enterprise cloud transformation</li>
+                    <li>Technical leadership across 5 distributed teams</li>
+                    <li>Strategic planning for cloud roadmap & adoption</li>
+                    <li>Stakeholder management at C-level</li>
+                    <li>Architecture review board member</li>
+                    <li>Speaker at cloud architecture conferences</li>
+                </ul>
+            </div>
+
+            <!-- Skills section - full width -->
+            <div class="card slide-up skills-section">
+                <h2>Technical Stack</h2>
+                <div class="skills-grid">
+                    <div class="skill-tag">AWS</div>
+                    <div class="skill-tag">Azure</div>
+                    <div class="skill-tag">Google Cloud</div>
+                    <div class="skill-tag">Kubernetes</div>
+                    <div class="skill-tag">Docker</div>
+                    <div class="skill-tag">Terraform</div>
+                    <div class="skill-tag">Jenkins</div>
+                    <div class="skill-tag">GitLab CI/CD</div>
+                    <div class="skill-tag">Ansible</div>
+                    <div class="skill-tag">Python</div>
+                    <div class="skill-tag">Go</div>
+                    <div class="skill-tag">Prometheus</div>
+                    <div class="skill-tag">Grafana</div>
+                    <div class="skill-tag">ELK Stack</div>
+                    <div class="skill-tag">Service Mesh</div>
+                    <div class="skill-tag">ArgoCD</div>
+                    <div class="skill-tag">Vault</div>
+                    <div class="skill-tag">Istio</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="fade-in">
+            <p>Building resilient, scalable cloud infrastructure for the future</p>
+            <p class="tagline">"Architecting tomorrow's cloud, today."</p>
+        </footer>
+    </div>
+</body>
+</html>
